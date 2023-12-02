@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-func Day2z1() {
+func Day2z2() {
 	scanner := utils.ReadFile("day2")
 	sum := 0
 
@@ -16,11 +16,7 @@ func Day2z1() {
 		s := scanner.Text()
 		stripped := strings.Split(s, " ")
 		if n := len(stripped); n > 2 {
-			possible := true
-			id, err := strconv.Atoi(stripped[1][:len(stripped[1])-1])
-			if err != nil {
-				log.Fatalln(err)
-			}
+			r, g, b := 0, 0, 0
 
 			for i := 2; i < n; i += 2 {
 				c, err := strconv.Atoi(stripped[i])
@@ -29,26 +25,24 @@ func Day2z1() {
 				}
 				switch stripped[i+1] {
 				case "red,", "red;", "red":
-					if c > 12 {
-						possible = false
+					if c > r {
+						r = c
 					}
 					break
 				case "green,", "green;", "green":
-					if c > 13 {
-						possible = false
+					if c > g {
+						g = c
 					}
 					break
 				case "blue,", "blue;", "blue":
-					if c > 14 {
-						possible = false
+					if c > b {
+						b = c
 					}
 					break
 				}
 			}
 
-			if possible {
-				sum += id
-			}
+			sum += r * g * b
 		}
 	}
 	fmt.Println(sum)
