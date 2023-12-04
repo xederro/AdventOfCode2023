@@ -1,4 +1,4 @@
-package days
+package day2
 
 import (
 	"adventOfCode/utils"
@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-func Day2z2() {
+func Part1() {
 	scanner := utils.ReadFile("day2")
 	sum := 0
 
@@ -16,7 +16,11 @@ func Day2z2() {
 		s := scanner.Text()
 		stripped := strings.Split(s, " ")
 		if n := len(stripped); n > 2 {
-			r, g, b := 0, 0, 0
+			possible := true
+			id, err := strconv.Atoi(stripped[1][:len(stripped[1])-1])
+			if err != nil {
+				log.Fatalln(err)
+			}
 
 			for i := 2; i < n; i += 2 {
 				c, err := strconv.Atoi(stripped[i])
@@ -25,24 +29,26 @@ func Day2z2() {
 				}
 				switch stripped[i+1] {
 				case "red,", "red;", "red":
-					if c > r {
-						r = c
+					if c > 12 {
+						possible = false
 					}
 					break
 				case "green,", "green;", "green":
-					if c > g {
-						g = c
+					if c > 13 {
+						possible = false
 					}
 					break
 				case "blue,", "blue;", "blue":
-					if c > b {
-						b = c
+					if c > 14 {
+						possible = false
 					}
 					break
 				}
 			}
 
-			sum += r * g * b
+			if possible {
+				sum += id
+			}
 		}
 	}
 	fmt.Println(sum)

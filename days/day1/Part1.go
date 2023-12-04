@@ -1,4 +1,4 @@
-package days
+package day1
 
 import (
 	"adventOfCode/utils"
@@ -6,14 +6,14 @@ import (
 	"strconv"
 )
 
-func Day1z1() {
+func Part1() {
 	scanner := utils.ReadFile("day1")
 	sum := 0
 
 	for scanner.Scan() {
 		s := scanner.Text()
-		var first int = 10
-		var last int = 10
+		first := 10
+		last := 10
 
 		for _, r := range s {
 			atoi, err := strconv.Atoi(string(r))

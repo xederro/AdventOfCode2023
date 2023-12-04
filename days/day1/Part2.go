@@ -1,4 +1,4 @@
-package days
+package day1
 
 import (
 	"adventOfCode/utils"
@@ -7,19 +7,19 @@ import (
 	"strconv"
 )
 
-func Day1z2() {
+func Part2() {
 	var digits = []string{"zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"}
 	scanner := utils.ReadFile("day1")
 	sum := 0
 
 	for scanner.Scan() {
 		s := scanner.Text()
-		var first int = 10
-		var last int = 10
-		var firstIndex int = 10
-		var lastIndex int = 10
+		first := 10
+		last := 10
+		firstIndex := 10
+		lastIndex := 10
 
-		var all [10][]int = [10][]int{}
+		all := [10][]int{}
 
 		for k, v := range digits {
 			all[k] = utils.FindIndices(s, strconv.Itoa(k))

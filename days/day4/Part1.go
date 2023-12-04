@@ -1,4 +1,4 @@
-package days
+package day4
 
 import (
 	"adventOfCode/utils"
@@ -13,12 +13,12 @@ type ticket struct {
 	Numbers []string
 }
 
-func Day4z1() {
+func Part1() {
 	scanner := utils.ReadFile("day4")
 	var tickets []ticket
 	sum := 0.0
 
-	compile, err := regexp.Compile("[ ]+")
+	compile, err := regexp.Compile(" +")
 	if err != nil {
 		return
 	}

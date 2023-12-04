@@ -1,4 +1,4 @@
-package days
+package day3
 
 import (
 	"adventOfCode/utils"
@@ -7,7 +7,7 @@ import (
 	"strconv"
 )
 
-func Day3z1() {
+func Part1() {
 	scanner := utils.ReadFile("day3")
 	sum := 0
 	input := []string{}
