@@ -1,5 +1,3 @@
-// it runs for ~2 minutes. Second smallest value was my answer I'm yet to fint why it returns wront smallest number.
-// I have some ideas but time is problem
 package day5
 
 import (
@@ -104,7 +102,7 @@ func Part2() {
 		if err != nil {
 			return
 		}
-		k := int64(10)
+		k := int64(15)
 		l := int64(leng)/k + 1
 		for t := k - 1; t >= 0; t-- {
 			wg.Add(1)
@@ -129,6 +127,14 @@ func fill(start int64, leng int64) int64 {
 	se := seed2{}
 	for j := leng - 1; j >= 0; j-- {
 		se.Id = start + j
+		se.Soil = -1
+		se.Fertilizer = -1
+		se.Water = -1
+		se.Light = -1
+		se.Temperature = -1
+		se.Humidity = -1
+		se.Location = -1
+
 		s := se.assign()
 
 		if m == -1 {
@@ -145,63 +151,70 @@ func (s *seed2) assign() int64 {
 	for _, v := range seedToSoil {
 		if v[0] <= s.Id && v[1] >= s.Id {
 			s.Soil = v[2] - v[0] + s.Id
+			break
 		}
 	}
-	if s.Soil == 0 {
+	if s.Soil == -1 {
 		s.Soil = s.Id
 	}
 
 	for _, v := range soilToFertilizer {
 		if v[0] <= s.Soil && v[1] >= s.Soil {
 			s.Fertilizer = v[2] - v[0] + s.Soil
+			break
 		}
 	}
-	if s.Fertilizer == 0 {
+	if s.Fertilizer == -1 {
 		s.Fertilizer = s.Soil
 	}
 
 	for _, v := range fertilizerToWater {
 		if v[0] <= s.Fertilizer && v[1] >= s.Fertilizer {
 			s.Water = v[2] - v[0] + s.Fertilizer
+			break
 		}
 	}
-	if s.Water == 0 {
+	if s.Water == -1 {
 		s.Water = s.Fertilizer
 	}
 
 	for _, v := range waterToLight {
 		if v[0] <= s.Water && v[1] >= s.Water {
 			s.Light = v[2] - v[0] + s.Water
+			break
 		}
 	}
-	if s.Light == 0 {
+	if s.Light == -1 {
 		s.Light = s.Water
 	}
 
 	for _, v := range lightToTemperature {
 		if v[0] <= s.Light && v[1] >= s.Light {
 			s.Temperature = v[2] - v[0] + s.Light
+			break
 		}
 	}
-	if s.Temperature == 0 {
+	if s.Temperature == -1 {
 		s.Temperature = s.Light
 	}
 
 	for _, v := range temperatureToHumidity {
 		if v[0] <= s.Temperature && v[1] >= s.Temperature {
 			s.Humidity = v[2] - v[0] + s.Temperature
+			break
 		}
 	}
-	if s.Humidity == 0 {
+	if s.Humidity == -1 {
 		s.Humidity = s.Temperature
 	}
 
 	for _, v := range humidityToLocation {
 		if v[0] <= s.Humidity && v[1] >= s.Humidity {
 			s.Location = v[2] - v[0] + s.Humidity
+			break
 		}
 	}
-	if s.Location == 0 {
+	if s.Location == -1 {
 		s.Location = s.Humidity
 	}
 
