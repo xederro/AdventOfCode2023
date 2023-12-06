@@ -3,9 +3,9 @@ package day6
 import (
 	"adventOfCode/utils"
 	"fmt"
+	"math"
 	"regexp"
 	"strconv"
-	"sync"
 )
 
 type race2 struct {
@@ -13,13 +13,9 @@ type race2 struct {
 	Distance int64
 }
 
-var wg sync.WaitGroup
-
 func Part2() {
 	scanner := utils.ReadFile("day6")
 	race := race2{}
-	var ways int64 = 0
-	divs := []int64{2, 3, 5, 7, 11, 13, 17, 19}
 
 	compile, err := regexp.Compile(" +")
 	if err != nil {
@@ -43,35 +39,12 @@ func Part2() {
 		race.Distance = int64(atoi)
 	}
 
-	k := int64(1)
-
-	for _, div := range divs {
-		if race.Time%div == 0 {
-			k += div
-		}
-	}
-
-	t := race.Time / k
-
-	for i := k - 1; i >= 0; i-- {
-		wg.Add(1)
-		i := i
-		go func() {
-			ways += race.CountWaysToWin(i*t, t)
-			wg.Done()
-		}()
-	}
-	wg.Wait()
-	fmt.Println(ways)
+	fmt.Println(race.CountWaysToWin())
 }
 
-func (r race2) CountWaysToWin(btime int64, span int64) int64 {
-	w := int64(0)
-
-	for i := btime; i < btime+span; i++ {
-		if i*(r.Time-i) > r.Distance {
-			w++
-		}
-	}
-	return w
+func (r race2) CountWaysToWin() int {
+	D := math.Sqrt(math.Pow(float64(r.Time), 2.0) - 4.0*float64(r.Distance))
+	z1 := math.Ceil(((float64(r.Time) + D) / 2.0) - 1)
+	z2 := math.Floor(((float64(r.Time) - D) / 2.0) + 1)
+	return int(z1 - z2 + 1)
 }

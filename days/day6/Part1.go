@@ -3,6 +3,7 @@ package day6
 import (
 	"adventOfCode/utils"
 	"fmt"
+	"math"
 	"regexp"
 	"strconv"
 )
@@ -50,14 +51,10 @@ func Part1() {
 	fmt.Println(ways)
 }
 
+// look: https://www.desmos.com/calculator/94kippzj2t
 func (r race) CountWaysToWin() int {
-	ways := 0
-
-	for i := 0; i < r.Time; i++ {
-		if i*(r.Time-i) > r.Distance {
-			ways++
-		}
-	}
-
-	return ways
+	D := math.Sqrt(math.Pow(float64(r.Time), 2.0) - 4.0*float64(r.Distance))
+	z1 := math.Ceil(((float64(r.Time) + D) / 2.0) - 1)
+	z2 := math.Floor(((float64(r.Time) - D) / 2.0) + 1)
+	return int(z1 - z2 + 1)
 }
