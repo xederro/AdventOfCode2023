@@ -19,7 +19,7 @@ func ReadFile(fileName string) *bufio.Scanner {
 
 func FindIndices(haystack, needle string) []int {
 	var x []int
-	for i := 0; i < len(haystack)-len(needle); i++ {
+	for i := 0; i < len(haystack); i++ {
 		j := strings.Index(haystack[i:], needle)
 		if j < 0 {
 			break
