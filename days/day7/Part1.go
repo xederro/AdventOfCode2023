@@ -3,7 +3,6 @@ package day7
 import (
 	"adventOfCode/utils"
 	"fmt"
-	"math"
 	"regexp"
 	"sort"
 	"strconv"
@@ -33,7 +32,7 @@ func Part1() {
 		if err != nil {
 			return
 		}
-		points := 10000000000
+		points := 1 << (4 * 5)
 		pointsInCard := 0
 
 		for i := 0; i < len(cards); i++ {
@@ -41,7 +40,7 @@ func Part1() {
 			if len(temp) > 0 {
 				points *= len(temp) + 1
 				for _, pos := range temp {
-					pointsInCard += (13 - i) * int(math.Pow(100.0, float64(5.0-pos-1)))
+					pointsInCard += (13 - i) << (4 * (5 - pos - 1))
 				}
 			}
 		}
