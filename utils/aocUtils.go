@@ -29,3 +29,20 @@ func FindIndices(haystack, needle string) []int {
 	}
 	return x
 }
+
+func LCM(i ...int64) int64 {
+	var w int64 = 1
+
+	for _, v := range i {
+		w = (v * w) / GCF(v, w)
+	}
+
+	return w
+}
+
+func GCF(i1, i2 int64) int64 {
+	if i2 == 0 {
+		return i1
+	}
+	return GCF(i2, i1%i2)
+}

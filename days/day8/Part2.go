@@ -50,7 +50,7 @@ func Part2() {
 			count2 = append(count2, int64(ints[0]))
 		}
 	}
-	fmt.Println(SCM(count2))
+	fmt.Println(utils.LCM(count2...))
 }
 
 func turnAll(pos int, step string, cur int) {
@@ -72,21 +72,4 @@ func turnAll(pos int, step string, cur int) {
 	}
 	go turnAll(pos, s, cur+1)
 	return
-}
-
-func SCM(i []int64) int64 {
-	var w int64 = 1
-
-	for _, v := range i {
-		w = (v * w) / GCF(v, w)
-	}
-
-	return w
-}
-
-func GCF(i1, i2 int64) int64 {
-	if i2 == 0 {
-		return i1
-	}
-	return GCF(i2, i1%i2)
 }
