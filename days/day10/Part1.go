@@ -128,31 +128,9 @@ func (p *pipe) right(scan *[][]*pipe) {
 	}
 }
 
-type stack []*pipe
-
-func (s *stack) Pop() *pipe {
-	if s.IsEmpty() {
-		return nil
-	} else {
-		i := len(*s) - 1
-		val := (*s)[i]
-		*s = (*s)[:i]
-
-		return val
-	}
-}
-
-func (s *stack) Push(value *pipe) {
-	*s = append(*s, value)
-}
-
-func (s *stack) IsEmpty() bool {
-	return len(*s) == 0
-}
-
 func (p *pipe) DFS() {
 	count := 1
-	var s stack
+	var s utils.Stack[pipe]
 	s.Push(p)
 	p.Visited = true
 	for !s.IsEmpty() {
@@ -169,28 +147,9 @@ func (p *pipe) DFS() {
 	}
 }
 
-type queue []*pipe
-
-func (q *queue) Dequeue() *pipe {
-	val := (*q)[0]
-	if !q.IsEmpty() {
-		*q = (*q)[1:]
-	}
-
-	return val
-}
-
-func (q *queue) Enqueue(value *pipe) {
-	*q = append(*q, value)
-}
-
-func (q *queue) IsEmpty() bool {
-	return len(*q) == 0
-}
-
 func (p *pipe) BFS() {
 	count := 1
-	var q queue
+	var q utils.Queue[pipe]
 	q.Enqueue(p)
 	for !q.IsEmpty() {
 		t := q.Dequeue()

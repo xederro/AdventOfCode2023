@@ -138,7 +138,6 @@ func Part2() {
 				len(bottom) > 0 && len(bottom)%2 == 1 &&
 				len(left) > 0 && len(left)%2 == 1 &&
 				len(right) > 0 && len(right)%2 == 1 {
-				fmt.Println(p, top, len(top), bottom, len(bottom), left, len(left), right, len(right))
 				field++
 			}
 		}
@@ -186,30 +185,8 @@ func (p *pipe2) right(scan *[][]*pipe2) {
 	}
 }
 
-type stack2 []*pipe2
-
-func (s *stack2) Pop() *pipe2 {
-	if s.IsEmpty() {
-		return nil
-	} else {
-		i := len(*s) - 1
-		val := (*s)[i]
-		*s = (*s)[:i]
-
-		return val
-	}
-}
-
-func (s *stack2) Push(value *pipe2) {
-	*s = append(*s, value)
-}
-
-func (s *stack2) IsEmpty() bool {
-	return len(*s) == 0
-}
-
 func (p *pipe2) DFS() {
-	var s stack2
+	var s utils.Stack[pipe2]
 	s.Push(p)
 	p.Visited = true
 	p.Loop = true
