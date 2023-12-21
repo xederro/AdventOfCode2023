@@ -16,10 +16,9 @@ const (
 )
 
 type block struct {
-	Visited  [4]bool
 	Heat     int
 	Routes   [4]*block
-	Streak   [4]int
+	Streak   int
 	Distance int
 }
 
@@ -37,7 +36,7 @@ func Part1() {
 			if err != nil {
 				return
 			}
-			b := block{Heat: atoi, Distance: math.MaxInt32, Streak: [4]int{0, 0, 0, 0}}
+			b := block{Heat: atoi, Distance: math.MaxInt32}
 			row = append(row, &b)
 			nodes = append(nodes, &b)
 		}
@@ -64,50 +63,9 @@ func Part1() {
 	}
 
 	start := route[0][0]
-	stop := route[len(route)-1][len(route[0])-1]
+	//stop := route[len(route)-1][len(route[0])-1]
 
-	fmt.Println(start.dijkstra(stop, TOP, 0))
-	for _, blocks := range route {
-		for _, b := range blocks {
-			fmt.Print(b.Distance, "\t")
-		}
-		fmt.Println()
-	}
+	fmt.Println(start)
 }
 
-func (b *block) dijkstra(end *block, dir int, streak int) int {
-	if b == end {
-		return 0
-	}
-
-	if b == nil || b.Visited[dir] || streak > 2 {
-		return math.MaxInt32
-	}
-
-	b.Visited[dir] = true
-
-	minDistance := math.MaxInt32
-	for i, neighbor := range b.Routes {
-		dist := math.MaxInt32
-		if b.Routes[i] != nil && !b.Routes[i].Visited[i] {
-			if dir == i {
-				if streak+1 < 2 {
-					dist = neighbor.dijkstra(end, i, streak+1) + neighbor.Heat
-				}
-			} else {
-				dist = neighbor.dijkstra(end, i, 0) + neighbor.Heat
-			}
-		}
-
-		if dist < minDistance {
-			minDistance = dist
-		}
-	}
-
-	b.Visited[dir] = true
-
-	if minDistance < b.Distance {
-		b.Distance = minDistance
-	}
-	return b.Distance
-}
+// 4d djikstra x,y,dir,timesmoved holding int least path

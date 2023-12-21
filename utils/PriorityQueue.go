@@ -2,10 +2,10 @@ package utils
 
 type PriorityQueue[T any] struct {
 	queue   []*T
-	compare func(a, b *T) int
+	compare func(a, b *T) bool
 }
 
-func (q *PriorityQueue[T]) SetComparator(comp func(a, b *T) int) {
+func (q *PriorityQueue[T]) SetComparator(comp func(a, b *T) bool) {
 	q.compare = comp
 }
 
@@ -15,10 +15,8 @@ func (q *PriorityQueue[T]) Dequeue() *T {
 		return nil
 	}
 	for k := range q.queue {
-		if q.compare(q.queue[val], q.queue[k]) >= 0 {
+		if q.compare(q.queue[val], q.queue[k]) {
 			val = k
-		} else {
-
 		}
 	}
 	r := q.queue[val]
