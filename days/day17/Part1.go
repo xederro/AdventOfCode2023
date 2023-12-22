@@ -11,13 +11,14 @@ import (
 type block struct {
 	Heat     int
 	Routes   []*block
+	Prev     *block
 	Distance int
 	Visited  bool
+	Coords   [4]int
 }
 
 func Part1() {
 	scanner := utils.ReadFile("day17")
-	//x, y, dir, streak
 	var route [][][4][3]*block
 
 	var pq utils.PriorityQueue[block]
@@ -56,37 +57,51 @@ func Part1() {
 		for x, cell := range row {
 			for dir, param := range cell {
 				for streak, b := range param {
-					var r []*block
-
+					b.Coords = [4]int{y, x, dir, streak}
 					for newDir := 0; newDir < 4; newDir++ {
 						curry := y
 						currx := x
 
-						if y > 0 && newDir == 0 {
-							curry--
-						}
-						if y < maxy && newDir == 1 {
-							curry++
-						}
-						if x > 0 && newDir == 2 {
-							currx--
-						}
-						if x < maxx && newDir == 3 {
-							currx++
-						}
-						//fmt.Println(curry, currx, y, x, dir)
-						for i := 0; i < 4; i++ {
-							if i == dir {
-								if streak != 2 {
-									r = append(r, route[curry][currx][i][streak+1])
-								}
+						if newDir == 0 {
+							if y > 0 {
+								curry--
+							} else {
 								continue
 							}
-							r = append(r, route[curry][currx][i][0])
+						}
+						if newDir == 1 {
+							if y < maxy {
+								curry++
+							} else {
+								continue
+							}
+						}
+						if newDir == 2 {
+							if x > 0 {
+								currx--
+							} else {
+								continue
+							}
+						}
+						if newDir == 3 {
+							if x < maxx {
+								currx++
+							} else {
+								continue
+							}
+						}
+
+						if newDir == dir {
+							if streak == 2 {
+								continue
+							}
+							b.Routes = append(b.Routes, route[curry][currx][newDir][streak+1])
+						} else if newDir == 0 && dir == 1 || newDir == 1 && dir == 0 || newDir == 2 && dir == 3 || newDir == 3 && dir == 2 {
+							continue
+						} else {
+							b.Routes = append(b.Routes, route[curry][currx][newDir][0])
 						}
 					}
-
-					b.Routes = append(b.Routes, r...)
 				}
 			}
 		}
@@ -124,7 +139,6 @@ func Part1() {
 	fmt.Println(minimal)
 }
 
-// 4d djikstra x,y,dir,timesmoved holding int least path
 func djikstra(pq utils.PriorityQueue[block]) {
 	for !pq.IsEmpty() {
 		u := pq.Dequeue()
@@ -135,6 +149,7 @@ func djikstra(pq utils.PriorityQueue[block]) {
 				tmp := u.Distance + n.Heat
 				if tmp < n.Distance {
 					n.Distance = tmp
+					n.Prev = u
 				}
 			}
 		}
